@@ -35,34 +35,55 @@ cd [nome-do-projeto]
 pnpm install
 ```
 
-3. Configure as variáveis de ambiente:
-```bash
-cp .env.example .env.local
-```
+3. Configure o ambiente:
+   - O projeto inclui um arquivo `.env.example` com as variáveis necessárias
+   - Crie um novo arquivo `.env.local` baseado no `.env.example`:
+   ```bash
+   cp .env.example .env.local
+   ```
+   - Edite o arquivo `.env.local` com suas configurações específicas
 
-4. Edite o arquivo `.env.local` com suas configurações.
+## ⚙️ Configuração do Ambiente
 
-## ⚙️ Configuração
+O arquivo `.env.example` serve como template para as variáveis de ambiente necessárias. Você deve criar um arquivo `.env.local` baseado nele e configurar de acordo com seu ambiente:
 
 ### Autenticação Mock (Desenvolvimento)
 
-Para usar a autenticação mock durante o desenvolvimento, configure o `.env.local`:
+Para desenvolvimento rápido, você pode usar a autenticação mock. No seu `.env.local`:
 
 ```env
+# Desabilite o Supabase
+NEXT_PUBLIC_SUPABASE_URL=
+NEXT_PUBLIC_SUPABASE_ANON_KEY=
+
+# Habilite o mock
 MOCK_USER=true
 MOCK_USER_EMAIL=test@example.com
 MOCK_USER_PASSWORD=password123
+
+# NextAuth (obrigatório)
+NEXTAUTH_URL=http://localhost:3000
+NEXTAUTH_SECRET=seu-secret-aqui # Gere com: openssl rand -base64 32
 ```
 
 ### Supabase (Produção)
 
-Para usar o Supabase, configure o `.env.local`:
+Para usar o Supabase em produção, configure seu `.env.local`:
 
 ```env
+# Desabilite o mock
 MOCK_USER=false
+
+# Configure o Supabase
 NEXT_PUBLIC_SUPABASE_URL=sua-url-do-supabase
 NEXT_PUBLIC_SUPABASE_ANON_KEY=sua-chave-anonima
+
+# NextAuth (obrigatório)
+NEXTAUTH_URL=http://localhost:3000
+NEXTAUTH_SECRET=seu-secret-aqui # Gere com: openssl rand -base64 32
 ```
+
+> **Nota**: O arquivo `.env.local` não é versionado no git por questões de segurança. Cada desenvolvedor deve criar seu próprio arquivo baseado no `.env.example`.
 
 ## 🚀 Executando o Projeto
 
@@ -80,12 +101,12 @@ src/
 │   ├── api/
 │   │   └── auth/
 │   │       └── [...nextauth]/
-│   │   ├── dashboard/
-│   │   ├── login/
-│   │   └── layout.tsx
-│   ├── components/
-│   │   └── Header.tsx
-│   └── middleware.ts
+│   ├── dashboard/
+│   ├── login/
+│   └── layout.tsx
+├── components/
+│   └── Header.tsx
+└── middleware.ts
 ```
 
 ## 🔒 Autenticação
